@@ -11,9 +11,9 @@ using namespace cocos2d;
 #define LEVELCOMPELTE_LABEL "SocialUI/levelComplete.png"
 #define GAMEOVER_LABEL "SocialUI/gameOver.png"
 
-CCScene* EndGameLayer::scene()
+Scene* EndGameLayer::scene()
 {
-	CCScene *scene = CCScene::create();
+	Scene *scene = CCScene::create();
 	EndGameLayer *layer = EndGameLayer::create();
 	scene->addChild(layer);
 	return scene;
@@ -28,7 +28,7 @@ bool EndGameLayer::init()
 	{
 		return false;
 	}
-	winSize = Director::sharedDirector()->getWinSize();
+	winSize = Director::getInstance()->getWinSize();
 	setupGUI();
 	this->setTouchEnabled(true);
 
@@ -44,100 +44,59 @@ void EndGameLayer:: onEnter()
 
 void EndGameLayer::setupGUI()
 {
-	background = Sprite::create(ENDGAME_BACKGROUND);
-	background->setPosition( Vec2(winSize.width/2, winSize.height/2) );
-	this->addChild(background);
+	int pet_ = GAME_SHARED_HANDLER->getPet();
+	background = Sprite::create(StringUtils::format("Backgrounds/back_%d.jpg",pet_));
+	background->setAnchorPoint(Point(0, 1));
+	background->setPosition(Point(0, winSize.height));
+	this->addChild(background,-1);
 
 	MenuItemImage *restartMenuItem = MenuItemImage::create(BUTTON_RESTART_GAME, BUTTON_RESTART_GAME_PRESSED,CC_CALLBACK_1(EndGameLayer::restartGame,this) );
 	MenuItemImage *quitMenuItem = MenuItemImage::create(BUTTON_QUIT_GAME, BUTTON_QUIT_GAME_PRESSED, CC_CALLBACK_1(EndGameLayer::quitGame,this) );
-	MenuItemImage *nextMenuItem = MenuItemImage::create(BUTTON_RESTART_GAME, BUTTON_RESTART_GAME_PRESSED,CC_CALLBACK_1(EndGameLayer::nextGame,this) );
-	Menu *menu = Menu::create(restartMenuItem,quitMenuItem,nextMenuItem,NULL);
-	menu->setPosition(Vec2(0,0));
-	background->addChild(menu);
+	MenuItemImage *nextMenuItem = MenuItemImage::create(BUTTON_NEXT_GAME, BUTTON_NEXT_GAME_PRESSED,CC_CALLBACK_1(EndGameLayer::nextGame,this) );
 
 	restartMenuItem->setPosition(Vec2(winSize.width/2 - 150, winSize.height/2 - 250 ));
-	restartMenuItem->setScale(0.65);
-
-	nextMenuItem->setPosition(Vec2(winSize.width/2 , winSize.height/2 ));
-	nextMenuItem->setScale(0.65);
+	restartMenuItem->setScale(0.5);
+	
+	nextMenuItem->setPosition(Vec2(winSize.width/2 - 150, winSize.height/2 - 250));
+	nextMenuItem->setScale(0.5);
 
 	quitMenuItem->setPosition(Vec2(winSize.width/2 + 150, winSize.height/2 - 250 ));
-	quitMenuItem->setScale(0.65);
-	GameState *gs = GameState::sharedGameState();
-	if(gs->score >= gs->getScoreTarget( gs->getCurrentLevelNumber() )&&GAME_SHARED_HANDLER->getCurLevel()<GAME_SHARED_HANDLER->getTotalLevel()){
-		Sprite *sprite = Sprite::create(LEVELCOMPELTE_LABEL);
-		sprite->setPosition(Vec2(winSize.width/2, winSize.height/2 + 320));
+	quitMenuItem->setScale(0.5);
+
+	GameState *gs = GAME_SHARED_HANDLER;
+
+	if(gs->score >= gs->getScoreTarget()&&gs->getCurLevel()<gs->getTotalLevel()){
+		Sprite *sprite = Sprite::create(GAMEOVER_LABEL);
+		sprite->setPosition(Vec2(winSize.width/2, winSize.height/2 + 160));
 		this->addChild(sprite, 26);
-		LabelBMFont* levelComlete = LabelBMFont::create("LEVEL COMPLETE",FileUtils::sharedFileUtils()->fullPathForFilename("font.fnt").c_str(), 35);
-		levelComlete->setAlignment( kCCTextAlignmentCenter );
-		levelComlete->setAnchorPoint( Vec2(0.5,0.5) );
-		levelComlete->setWidth(winSize.width);
-		levelComlete->setPosition(Vec2(winSize.width/2, winSize.height/2 + 360));
-		levelComlete->setScale(0.8);
-		this->addChild(levelComlete,26);
 
-
-		LabelBMFont* score = LabelBMFont::create("Score: ", FileUtils::sharedFileUtils()->fullPathForFilename("font.fnt").c_str(), 35);
-		score->setAlignment( kCCTextAlignmentCenter );
-		score->setAnchorPoint( Vec2(0.5,0.5) );
-		score->setPosition(Vec2(winSize.width/2, winSize.height/2 + 100));
-
-		char buffer[64];
-		sprintf(buffer, "Score: %d", GameState::sharedGameState()->score);
-		score->setString(buffer);
-
-		this->addChild(score, 26);
-
-		//Menu *menu = Menu::create(restartMenuItem,quitMenuItem,nextMenuItem,NULL);
-		//menu->setPosition(Vec2(0,0));
-		//background->addChild(menu);
-
-		//restartMenuItem->setPosition(Vec2(winSize.width/2 - 150, winSize.height/2 - 250 ));
-		//restartMenuItem->setScale(0.65);
-
-		//nextMenuItem->setPosition(Vec2(winSize.width/2 , winSize.height/2 ));
-		//nextMenuItem->setScale(0.65);
-
-		//quitMenuItem->setPosition(Vec2(winSize.width/2 + 150, winSize.height/2 - 250 ));
-		//quitMenuItem->setScale(0.65);
-
+		Menu *menu = Menu::create(nextMenuItem,quitMenuItem,NULL);
+		menu->setPosition(Vec2(0,0));
+		background->addChild(menu);
 	}
-	else if(GAME_SHARED_HANDLER->getCurLevel()>=GAME_SHARED_HANDLER->getTotalLevel()&&gs->score >= gs->getScoreTarget( gs->getCurrentLevelNumber() )){
-	//TODO
+	else if(gs->getCurLevel()>=gs->getTotalLevel()&&gs->score >= gs->getScoreTarget()){
+		Sprite *sprite = Sprite::create(LEVELCOMPELTE_LABEL);
+		sprite->setPosition(Vec2(winSize.width/2, winSize.height/2 + 160));
+		this->addChild(sprite, 26);
+
+		quitMenuItem->setPosition(Vec2(winSize.width/2 , winSize.height/2 - 250 ));
+		Menu *menu = Menu::create(quitMenuItem,NULL);
+		menu->setPosition(Vec2(0,0));
+		background->addChild(menu);
 	}else{
 		Sprite *sprite = Sprite::create(GAMEOVER_LABEL);
 		sprite->setPosition(Vec2(winSize.width/2, winSize.height/2 + 160));
 		this->addChild(sprite, 26);
 
-		LabelBMFont* levelComlete = LabelBMFont::create("GAME OVER",FileUtils::sharedFileUtils()->fullPathForFilename("fonts/font.fnt").c_str(), 35);
-		levelComlete->setAlignment( kCCTextAlignmentCenter );
-		levelComlete->setAnchorPoint( Vec2(0.5,0.5) );
-		levelComlete->setWidth(winSize.width);
-		levelComlete->setPosition(Vec2(winSize.width/2, winSize.height/2 + 360));
-		levelComlete->setScale(1.0);
-		this->addChild(levelComlete,26);
-
-		/*Menu *menu = Menu::create(restartMenuItem,quitMenuItem,NULL);
+		Menu *menu = Menu::create(restartMenuItem,quitMenuItem,NULL);
 		menu->setPosition(Vec2(0,0));
 		background->addChild(menu);
-
-		restartMenuItem->setPosition(Vec2(winSize.width/2 - 150, winSize.height/2 - 250 ));
-		restartMenuItem->setScale(0.65);
-
-		quitMenuItem->setPosition(Vec2(winSize.width/2 + 150, winSize.height/2 - 250 ));
-		quitMenuItem->setScale(0.65);*/
-
 	}
 }
 
 void EndGameLayer::restartGame(Ref* r){
-
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/ButtonClick.mp3");
-	//CCScene *scene = CCScene::create();
 	Scene *gameLayer = Play::createScene();
-	//gameLayer->GameStart();
-	// scene->addChild(gameLayer);
-
 	Director::sharedDirector()->replaceScene(TransitionCrossFade::create(0.3,gameLayer));
 }
 void EndGameLayer::quitGame(Ref* r){
@@ -145,7 +104,7 @@ void EndGameLayer::quitGame(Ref* r){
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/ButtonClick.mp3");
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Audio/MainMenuMusic.mp3");
 	this->removeFromParent();
-	CCScene *scene = CCScene::create();
+	Scene *scene = Scene::create();
 	GameStart *playLayer = GameStart::create();
 	scene->addChild(playLayer);
 	Director::sharedDirector()->replaceScene(scene);
@@ -153,7 +112,7 @@ void EndGameLayer::quitGame(Ref* r){
 void EndGameLayer::nextGame(Ref* r){
 
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/ButtonClick.mp3");
-	//CCScene *scene = CCScene::create();
+	//Scene *scene = Scene::create();
 	Scene *gameLayer = Play::createScene();
 	//gameLayer->GameStart();
 	// scene->addChild(gameLayer);

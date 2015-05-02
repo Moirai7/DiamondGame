@@ -1,20 +1,3 @@
-/****************************************************************************
- 
- Match 3 Source Code
- 
- Copyright (c) 2014 GameAcademy.com
- 
- www.GameAcademy.com
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- 
- ****************************************************************************/
 
 #include "PauseLayer.h"
 #include "Game/SharedClass/GameConstants.h"
@@ -24,10 +7,10 @@ using namespace cocos2d;
 
 #define PAUSE_BACKGROUND "SocialUI/bgr_caption.png"
 
-CCScene* PauseLayer::scene()
+Scene* PauseLayer::scene()
 {
     // 'scene' is an autorelease object
-    CCScene *scene = CCScene::create();
+    Scene *scene = Scene::create();
     
     // 'layer' is an autorelease object
     PauseLayer *layer = PauseLayer::create();
@@ -48,7 +31,7 @@ bool PauseLayer::init()
     {
         return false;
     }
-    winSize = CCDirector::sharedDirector()->getWinSize();//TARGET_DESIGN_RESOLUTION_SIZE;
+    winSize = Director::sharedDirector()->getWinSize();//TARGET_DESIGN_RESOLUTION_SIZE;
     setupGUI();
     this->setTouchEnabled(true);
     
@@ -58,7 +41,7 @@ bool PauseLayer::init()
 void PauseLayer:: onEnter()
 {
 	//TODO
- //   CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, kCCMenuHandlerPriority, true);
+ //   Director::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, kCCMenuHandlerPriority, true);
     CCLayer::onEnter();
 }
 
@@ -67,7 +50,7 @@ void PauseLayer::setupGUI()
     
     //add bg.
     background = CCSprite::create(PAUSE_BACKGROUND);
-    background->setPosition( ccp(winSize.width/2, winSize.height/2) );
+    background->setPosition( Vec2(winSize.width/2, winSize.height/2) );
     this->addChild(background);
     
     MenuItemImage *resumeMenuItem = MenuItemImage::create(BUTTON_START_GAME, BUTTON_START_GAME_PRESSED, CC_CALLBACK_1(PauseLayer::resumeGame,this));
@@ -77,11 +60,8 @@ void PauseLayer::setupGUI()
     menu->setPosition(Vec2(0,0));
     background->addChild(menu);
     
-    resumeMenuItem->setPosition(ccp(winSize.width/2, winSize.height/2 + (250)));
-    quitMenuItem->setPosition(ccp(winSize.width/2, winSize.height/2 ));
-    
-//    quitLabel->setString("QuitGame");
-
+    resumeMenuItem->setPosition(Vec2(winSize.width/2, winSize.height/3 + (250)));
+    quitMenuItem->setPosition(Vec2(winSize.width/2, winSize.height/3 ));
     
 }
 
@@ -96,15 +76,15 @@ void PauseLayer::quitGame(Ref* sender)
         CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("ButtonClick.mp3");
         CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("MainMenuMusic.mp3");
     this->removeFromParent();
-    CCScene *scene = CCScene::create();
+    Scene *scene = Scene::create();
     GameStart *playLayer = GameStart::create();
     scene->addChild(playLayer);
-    CCDirector::sharedDirector()->replaceScene(scene);
+    Director::sharedDirector()->replaceScene(scene);
 }
 void PauseLayer::onExit()
 {
 	//TODO
-//    CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+//    Director::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
     CCLayer::onExit();
 }
 

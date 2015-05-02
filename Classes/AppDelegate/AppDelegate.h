@@ -17,7 +17,7 @@ public:
     virtual ~AppDelegate();
 
     /**
-    @brief    Implement CCDirector and CCScene init code here.
+    @brief    Implement CCDirector and Scene init code here.
     @return true    Initialize success, app continue.
     @return false   Initialize failed, app terminate.
     */

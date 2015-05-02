@@ -194,6 +194,8 @@ enum eFBRequestType
 #define BUTTON_START_GAME_PRESSED "SocialUI/btn_resume_pressed.png"
 #define BUTTON_RESTART_GAME "SocialUI/btn_restart.png"
 #define BUTTON_RESTART_GAME_PRESSED "SocialUI/btn_restart_pressed.png"
+#define BUTTON_NEXT_GAME "SocialUI/btn_next.png"
+#define BUTTON_NEXT_GAME_PRESSED "SocialUI/btn_next_pressed.png"
 #define BUTTON_QUIT_GAME "SocialUI/btn_quit.png"
 #define BUTTON_QUIT_GAME_PRESSED "SocialUI/btn_quit_pressed.png"
 #define BUTTON_PAUSE "SocialUI/btn_p.png"

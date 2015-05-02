@@ -39,7 +39,7 @@ public:
     int getCurrentLevelNumber();
     void setCurrentLevelNumber(int level);
     void giveLife(int,bool);
-    int getScoreTarget(int levelNum);
+    int getScoreTarget();
     int getTotalMoves(int levelNum);
     int getLevelHighScore(int levelNum);
     void updateLevelHighScore(int score, const char *key);
