@@ -60,7 +60,7 @@ bool GameStart::init(){
 		outerBox->setBackGroundImage(StringUtils::format("Backgrounds/back_%d.jpg",i+1));
 
 		Sprite* sprite = Sprite::create(StringUtils::format("LevelSelection/thumb%d.png",i+1));
-		sprite->setPosition(Vec2(widgetSize.width/2, widgetSize.height/2));
+		sprite->setPosition(Vec2(widgetSize.width/2, widgetSize.height/3));
 		outerBox->addChild(sprite);
 
 		auto actionUp = JumpBy::create(2, Vec2(0,0), 80, 4);
@@ -70,7 +70,7 @@ bool GameStart::init(){
 		pageView->insertPage(outerBox,i);
 	}
 
-	//pageView->addEventListener(CC_CALLBACK_2(GameStart::pageViewEvent, this));
+	pageView->addEventListener(CC_CALLBACK_2(GameStart::pageViewEvent, this));
 	pageView->setName("pageView");
 	this->addChild(pageView);
 
@@ -93,7 +93,7 @@ bool GameStart::init(){
 	MenuItemImage *playMenuItem = MenuItemImage::create("LevelSelection/LS07.png", "LevelSelection/LS08.png", CC_CALLBACK_1(GameStart::startCallback,this));
 	Menu *menu = Menu::create(playMenuItem,NULL);   
 	menu->setPosition(Vec2(0, 0));
-	playMenuItem->setPosition(Vec2(widgetSize.width/2, widgetSize.height/3-50));
+	playMenuItem->setPosition(Vec2(widgetSize.width/2, widgetSize.height/2));
 
 	this->addChild(menu,10);
 	SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Audio/MainMenuMusic.mp3",true);
@@ -106,7 +106,7 @@ void GameStart::pageViewEvent(Ref *pSender, PageView::EventType type)
 	{
 	case PageView::EventType::TURNING:
 		{
-			//startCallback(NULL);
+			startCallback(NULL);
 			PageView* pageView = dynamic_cast<PageView*>(pSender);
 			log(CCString::createWithFormat("page = %ld", pageView->getCurPageIndex() + 1)->getCString());
 		}
@@ -123,8 +123,6 @@ void GameStart::startCallback(Ref* sender)
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/ButtonClick.mp3");
 	//Scene* scene = Scene::create();
 	Scene *gameLayer = Play::createScene();
-	GAME_SHARED_HANDLER->setCurLevel(0);
-	GAME_SHARED_HANDLER->getGameInfo(*(GAME_SHARED_HANDLER->levelInfoDict),GAME_SHARED_HANDLER->getCurLevel());
    // gameLayer->GameStart();
     //scene->addChild(gameLayer);
 

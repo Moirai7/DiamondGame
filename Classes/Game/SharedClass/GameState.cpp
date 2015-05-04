@@ -127,7 +127,7 @@ bool GameState::init()
    
 }
 
-int GameState::getScoreTarget()
+int GameState::getScoreTarget(int levelNum)
 {
 	return maxscore;
 }
@@ -169,7 +169,7 @@ void GameState::setCurrentLevelNumber(int level){
 bool GameState::addLevelProgress(int score, int level){
     const char *key = String::createWithFormat("%s%d",LEVEL_KEY_PREFIX,level)->getCString();
     int perviousHighScore = UserDefault::sharedUserDefault()->getIntegerForKey(key);
-    int targetScore = GAME_SHARED_HANDLER->getScoreTarget();
+    int targetScore = GAME_SHARED_HANDLER->getScoreTarget(level);
 
     
     if(score>targetScore){
@@ -204,7 +204,7 @@ int GameState::getCompletedLevelCount(){
 bool GameState::isLevelCompleted(int level){
     const char *key = String::createWithFormat("%s%d",LEVEL_KEY_PREFIX,level)->getCString();
     int highscore = UserDefault::sharedUserDefault()->getIntegerForKey(key);
-    int targetScore = GAME_SHARED_HANDLER->getScoreTarget();
+    int targetScore = GAME_SHARED_HANDLER->getScoreTarget(level);
 
     if(highscore>targetScore){
         return true;
@@ -215,7 +215,7 @@ int GameState::getLevelStars(int level){
     
     const char *key = String::createWithFormat("%s%d",LEVEL_KEY_PREFIX,level)->getCString();
     int highscore = UserDefault::sharedUserDefault()->getIntegerForKey(key);
-    int targetScore = GAME_SHARED_HANDLER->getScoreTarget();
+    int targetScore = GAME_SHARED_HANDLER->getScoreTarget(level);
     int stars = 0;
     
     float percentage =(highscore/targetScore)*75;
@@ -237,7 +237,7 @@ int GameState::getLevelStarsWithScore(int level,int score){
     
 
     int highscore = score;
-    int targetScore = GAME_SHARED_HANDLER->getScoreTarget();
+    int targetScore = GAME_SHARED_HANDLER->getScoreTarget(level);
     int stars = 0;
     
     float percentage =(highscore/targetScore)*75;

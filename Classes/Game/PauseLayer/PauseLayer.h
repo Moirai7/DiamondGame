@@ -1,7 +1,23 @@
+/****************************************************************************
+ 
+ Match 3 Source Code
+ 
+ Copyright (c) 2014 GameAcademy.com
+ 
+ www.GameAcademy.com
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ 
+ ****************************************************************************/
 
-
-#ifndef __llgame__PauseLayer__
-#define __llgame__PauseLayer__
+#ifndef __match3__PauseLayer__
+#define __match3__PauseLayer__
 
 
 #include <iostream>
@@ -26,7 +42,7 @@ public:
     void resumeGame(Ref* sender);
     void quitGame(Ref* sender);
     // there's no 'id' in cpp, so we recommand to return the exactly class pointer
-    static cocos2d::Scene* scene();
+    static cocos2d::CCScene* scene();
     
     virtual void onEnter();
     virtual void onExit();

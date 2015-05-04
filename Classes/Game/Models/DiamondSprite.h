@@ -18,6 +18,7 @@ public:
 	static DiamondSprite *create(int row, int col);
 	int getCol(){return m_col;}
 	int getRow(){return m_row;}
+	int getIndex(){return m_imgIndex;}
 	static float getContentWidth();
 	DiamondSprite();
     CC_SYNTHESIZE(int, m_row, Row);
