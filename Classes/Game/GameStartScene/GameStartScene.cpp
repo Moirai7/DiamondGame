@@ -60,6 +60,7 @@ bool GameStart::init(){
 		outerBox->setBackGroundImage(StringUtils::format("Backgrounds/back_%d.jpg",i+1));
 
 		Sprite* sprite = Sprite::create(StringUtils::format("LevelSelection/thumb%d.png",i+1));
+		//Sprite* sprite = Sprite::create(StringUtils::format("Monster/Monster%d.png",i+1));
 		sprite->setPosition(Vec2(widgetSize.width/2, widgetSize.height/2));
 		outerBox->addChild(sprite);
 
