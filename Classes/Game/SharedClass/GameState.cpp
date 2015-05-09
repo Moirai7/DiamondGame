@@ -67,11 +67,18 @@ void GameState::getGameInfo(const Json::Value& obj,int level){
 		game[k]=tmp_game[k]["V"].asInt();
 	}
 	maxmove = tmp_level["MaxMove"].asInt();
+	//monsters.clear();
+	/*for(auto itor = monsters.begin();itor!=monsters.end();++itor){
+			if(*(itor))
+				delete *(itor);
+	}*/
+	monsters.clear();
 	Json::Value tmp_monster = tmp_level["Monster"];		
 	for(int j=0;j<tmp_monster.size();j++){
 		int num = tmp_monster[j]["MonsterNum"].asInt();
 		int blood = tmp_monster[j]["MonsterBlood"].asInt();
 		MonsterSprite* ms = MonsterSprite::createMonsterSprite(num,blood);
+		ms->retain();
 		monsters.push_back(ms);
 	}
 }
@@ -81,7 +88,7 @@ void GameState::getGameInfo(const Json::Value& obj)
 	curlevel = obj["CurLevel"].asInt();
 	totalLevel = obj["TotalLevel"].asInt();
 	*levelInfoDict = obj["Level"];
-	getGameInfo(*levelInfoDict,curlevel);
+	//getGameInfo(*levelInfoDict,curlevel);
 }
 
 
@@ -332,10 +339,11 @@ void GameState::giveLife(int quantity, bool add)
 
 GameState* GameState::sharedGameState()
 {
-    if(! instanceFlag)
+	static int init = 0;
+    if(! init)
     {
         single = GameState::create();//new GameState();
-        instanceFlag = true;
+        init = true;
 
         return single;
     }

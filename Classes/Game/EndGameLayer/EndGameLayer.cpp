@@ -65,7 +65,7 @@ void EndGameLayer::setupGUI()
 
 	GameState *gs = GAME_SHARED_HANDLER;
 
-	if(gs->score >= gs->getScoreTarget()&&gs->getCurLevel()<gs->getTotalLevel()){
+	if(gs->score == 1&&gs->getCurLevel()<gs->getTotalLevel()){
 		Sprite *sprite = Sprite::create(GAMEOVER_LABEL);
 		sprite->setPosition(Vec2(winSize.width/2, winSize.height/2 + 160));
 		this->addChild(sprite, 26);
@@ -74,7 +74,7 @@ void EndGameLayer::setupGUI()
 		menu->setPosition(Vec2(0,0));
 		background->addChild(menu);
 	}
-	else if(gs->getCurLevel()>=gs->getTotalLevel()&&gs->score >= gs->getScoreTarget()){
+	else if(gs->getCurLevel()>=gs->getTotalLevel()&&gs->score == 1){
 		Sprite *sprite = Sprite::create(LEVELCOMPELTE_LABEL);
 		sprite->setPosition(Vec2(winSize.width/2, winSize.height/2 + 160));
 		this->addChild(sprite, 26);
@@ -96,6 +96,7 @@ void EndGameLayer::setupGUI()
 
 void EndGameLayer::restartGame(Ref* r){
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/ButtonClick.mp3");
+	GAME_SHARED_HANDLER->getGameInfo(*(GAME_SHARED_HANDLER->levelInfoDict),GAME_SHARED_HANDLER->getCurLevel());
 	Scene *gameLayer = Play::createScene();
 	Director::sharedDirector()->replaceScene(TransitionCrossFade::create(0.3,gameLayer));
 }
@@ -113,13 +114,13 @@ void EndGameLayer::nextGame(Ref* r){
 
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/ButtonClick.mp3");
 	//Scene *scene = Scene::create();
-	Scene *gameLayer = Play::createScene();
 	//gameLayer->GameStart();
 	// scene->addChild(gameLayer);
 	//GAME_SHARED_HANDLER->getGameInfo(GAME_SHARED_HANDLER->levelInfoDict,GAME_SHARED_HANDLER->getCurLevel()+1);
 	if(GAME_SHARED_HANDLER->getCurLevel()<GAME_SHARED_HANDLER->getTotalLevel()){
 		GAME_SHARED_HANDLER->setCurLevel(GAME_SHARED_HANDLER->getCurLevel()+1);
 		GAME_SHARED_HANDLER->getGameInfo(*(GAME_SHARED_HANDLER->levelInfoDict),GAME_SHARED_HANDLER->getCurLevel());
+		Scene *gameLayer = Play::createScene();
 		Director::sharedDirector()->replaceScene(TransitionCrossFade::create(0.3,gameLayer));
 	}
 }

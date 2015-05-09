@@ -123,12 +123,12 @@ void GameStart::startCallback(Ref* sender)
 	GAME_SHARED_HANDLER->setPet(pageView->getCurPageIndex() + 1);
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Audio/ButtonClick.mp3");
 	//Scene* scene = Scene::create();
-	Scene *gameLayer = Play::createScene();
+	
 	GAME_SHARED_HANDLER->setCurLevel(0);
 	GAME_SHARED_HANDLER->getGameInfo(*(GAME_SHARED_HANDLER->levelInfoDict),GAME_SHARED_HANDLER->getCurLevel());
    // gameLayer->GameStart();
     //scene->addChild(gameLayer);
-
+	Scene *gameLayer = Play::createScene();
 	Director::getInstance()->replaceScene(TransitionCrossFade::create(0.5,gameLayer));
 
 }
