@@ -6,6 +6,7 @@ MonsterSprite * MonsterSprite::createMonsterSprite(int num,int blood){
     nc->number=num;
 	//String s = StringUtils::format("Monster/Monster%d.png",num);
 	nc->monster= Sprite::create(StringUtils::format("Monster/Monster%d.png",num));
+	nc->monster->retain();
 //    auto bg=LayerColor::create(Color4B(175,175,175,125),80, 80);
 //    nc->addChild(bg);
     //nc->monster->setContentSize(Size(80,80));
